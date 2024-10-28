@@ -1,0 +1,43 @@
+[features]
+strict = []
+
+[package]
+name = "bempp-quadrature"
+version = "0.1.0-dev"
+edition = "2021"
+authors = [
+    "Timo Betcke <timo.betcke@gmail.com>",
+    "Srinath Kailasa <srinathkailasa@gmail.com>",
+    "Matthew Scroggs <rust@mscroggs.co.uk>",
+]
+description = "Simplex quadrature rules and boundary element singular quadrature."
+license = "BSD-3-Clause"
+homepage = "https://github.com/bempp/quadrature"
+repository = "https://github.com/bempp/quadrature"
+readme = "README.md"
+keywords = ["numerics"]
+categories = ["mathematics", "science"]
+
+[lib]
+name = "bempp_quadrature"
+crate-type = ["lib", "cdylib"]
+
+[dependencies]
+itertools = "0.13.*"
+num = "0.4"
+lazy_static = "1.4"
+ndelement = { version = "0.1.2", default-features = false }
+
+[dev-dependencies]
+approx = "0.5"
+paste = "1.*"
+cauchy = "0.4.*"
+criterion = { version = "0.5.*", features = ["html_reports"] }
+
+[build-dependencies]
+
+[package.metadata.docs.rs]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+
+[lints.clippy]
+wildcard_imports = "forbid"
