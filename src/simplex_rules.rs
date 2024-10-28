@@ -3,6 +3,7 @@
 use crate::simplex_rule_definitions::SIMPLEX_RULE_DEFINITIONS;
 use crate::types::NumericalQuadratureDefinition;
 use crate::types::QuadratureError;
+use itertools::Itertools;
 use ndelement::types::ReferenceCellType;
 
 /// Return a simplex rule for a given number of points.
@@ -41,13 +42,10 @@ pub fn simplex_rule(
 }
 
 /// For a given cell type return a vector with the numbers of points for which simplex rules are available.
-pub fn available_rules(cell_type: ReferenceCellType) -> Vec<usize> {
+pub fn available_rules(cell_type: ReferenceCellType) -> Option<Vec<usize>> {
     SIMPLEX_RULE_DEFINITIONS
         .get(&cell_type)
-        .unwrap()
-        .iter()
-        .map(|(npoints, _)| *npoints)
-        .collect()
+        .map(|rule| rule.iter().map(|(npoints, _)| *npoints).collect_vec())
 }
 
 #[cfg(test)]
@@ -81,7 +79,7 @@ mod test {
                 #[test]
                 fn [<test_volume_ $cell:lower>]() {
                     let cell_type = ReferenceCellType::[<$cell>];
-                    let rules = available_rules(cell_type);
+                    let rules = available_rules(cell_type).unwrap();
                     for npoints in rules {
                         let rule = simplex_rule(cell_type, npoints).unwrap();
                         let volume_actual: f64 = rule.weights.iter().sum();
