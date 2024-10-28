@@ -16,10 +16,6 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: "nightly"
-      - name: Set up MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: "mpich"
       - uses: actions/checkout@v3
 
       - name: Build docs
@@ -45,10 +41,6 @@ jobs:
         with:
           toolchain: "nightly"
           components: rustfmt
-      - name: Set up MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: "mpich"
       - uses: actions/checkout@v3
 
       - name: Build docs
@@ -64,7 +56,7 @@ jobs:
       - name: Upload artifact for docs
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'target/doc'
+          path: "target/doc"
       - name: Deploy docs to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
