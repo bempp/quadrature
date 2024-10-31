@@ -91,7 +91,7 @@ with open("simplex_rule_definitions.rs", "w") as f:
         else:
             raise ValueError("Unknown simplex type.")
 
-        points = points.T.flatten()
+        points = points.flatten()
         weights = weights.flatten()
 
         f.write("m.get_mut(&" + identifier + ").unwrap().insert(\n")
@@ -131,5 +131,5 @@ with open("simplex_rule_definitions.rs", "w") as f:
     f.write("m };\n}")
 
 os.system("rustfmt ./simplex_rule_definitions.rs")
-os.system("cp ./simplex_rule_definitions.rs ../")
+os.system("cp ./simplex_rule_definitions.rs ../src/")
 os.system("rm ./simplex_rule_definitions.rs")
