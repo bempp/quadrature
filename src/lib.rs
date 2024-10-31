@@ -11,4 +11,3 @@ pub mod types;
 mod test {
     use strum as _; // Hack to show that strum is used, as cargo test is not picking up dependencies in examples
 }
-
