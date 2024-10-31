@@ -31,6 +31,11 @@ jobs:
         run: cargo test --release ${{ matrix.feature-flags }}
       - name: Run tests
         run: cargo test --examples --release ${{ matrix.feature-flags }}
+      - name: Run examples
+        run: |
+          python3 find_examples.py
+          chmod +x examples.sh
+          ./examples.sh
 
   check-dependencies:
     name: Check dependencies
