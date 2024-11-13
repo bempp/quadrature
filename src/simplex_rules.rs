@@ -10,7 +10,7 @@ macro_rules! simplex_rule {
         paste! {
 use crate::simplex_rule_definitions::[<SIMPLEX_RULE_DEFINITIONS_ $cell:upper>];
 
-/// Return a simplex rule for a given number of points.
+/// Return a simplex rule on a [<$cell:lower>] for a given number of points.
 ///
 /// If the rule does not exist `Err(())` is returned.
 pub fn [<simplex_rule_ $cell:lower>](
@@ -32,7 +32,7 @@ pub fn [<simplex_rule_ $cell:lower>](
 }
 
 
-/// For a given cell type return a vector with the numbers of points for which simplex rules are available.
+/// Return a vector with the numbers of points for which simplex rules are available on a [<$cell:lower>].
 pub fn [<available_rules_ $cell:lower>]() -> Vec<usize> {
     [<SIMPLEX_RULE_DEFINITIONS_ $cell:upper>].iter().map(|(npoints, _)| *npoints).collect_vec()
 }
