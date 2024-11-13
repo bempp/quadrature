@@ -25,11 +25,10 @@ crate-type = ["lib", "cdylib"]
 [dependencies]
 itertools = "0.13.*"
 lazy_static = "1.4"
-ndelement = { git = "https://github.com/bempp/ndelement.git", default-features = false }
+paste = "1.*"
 
 [dev-dependencies]
 approx = "0.5"
-paste = "1.*"
 strum = "0.26"
 
 [build-dependencies]
