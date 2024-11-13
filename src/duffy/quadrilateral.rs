@@ -2,12 +2,11 @@
 use crate::duffy::common::{
     create_quadrilateral_mapper, next_quadrilateral_vertex, transform_coords,
 };
-use crate::simplex_rules::simplex_rule;
+use crate::simplex_rules::simplex_rule_interval;
 use crate::types::{
     CellToCellConnectivity, NumericalQuadratureDefinition, QuadratureError,
     TestTrialNumericalQuadratureDefinition,
 };
-use ndelement::types::ReferenceCellType;
 
 fn identical_quadrilaterals(
     interval_rule: &NumericalQuadratureDefinition,
@@ -328,7 +327,7 @@ pub fn quadrilateral_duffy(
     connectivity: &CellToCellConnectivity,
     npoints: usize,
 ) -> Result<TestTrialNumericalQuadratureDefinition, QuadratureError> {
-    let rule = simplex_rule(ReferenceCellType::Interval, npoints)?;
+    let rule = simplex_rule_interval(npoints)?;
 
     match connectivity.connectivity_dimension {
         // Identical triangles

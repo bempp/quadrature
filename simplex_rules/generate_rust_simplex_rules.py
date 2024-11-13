@@ -25,91 +25,16 @@ with open("simplex_rule_definitions.rs", "w") as f:
     f.write("#![allow(clippy::excessive_precision)]\n");
     f.write("use std::collections::HashMap;\n")
     f.write("use lazy_static::lazy_static;\n")
-    f.write("use ndelement::types::ReferenceCellType;\n")
     f.write("\n")
     f.write("type HM = HashMap<usize, (usize, Vec<f64>, Vec<f64>)>;\n")
     f.write("\n")
     f.write("lazy_static! {\n")
-    f.write("pub(crate) static ref SIMPLEX_RULE_DEFINITIONS: HashMap<ReferenceCellType, HM> = {\n")
-    f.write("let mut m = HashMap::<ReferenceCellType, HM>::new();\n")
-    f.write("m.insert(ReferenceCellType::Triangle, HM::new());\n")
-    f.write("m.insert(ReferenceCellType::Quadrilateral, HM::new());\n")
-    f.write("m.insert(ReferenceCellType::Hexahedron, HM::new());\n")
-    f.write("m.insert(ReferenceCellType::Tetrahedron, HM::new());\n")
-    f.write("m.insert(ReferenceCellType::Prism, HM::new());\n")
-    f.write("m.insert(ReferenceCellType::Pyramid, HM::new());\n")
-    f.write("m.insert(ReferenceCellType::Interval, HM::new());\n")
 
-    for index, rule_file in enumerate(all_rule_files):
-        arr = np.atleast_2d(np.loadtxt(rule_file))
-        points = arr[:, :-1]
-        weights = arr[:, -1]
-
-        identifier = None
-        # Get identifier and reparameterize for
-        # from polyquad reference element to our
-        # reference element
-        if rule_file.startswith("./quad"):
-            identifier = "ReferenceCellType::Quadrilateral"
-
-            points = 0.5 * (1.0 + points)
-            weights = weights / 4.0
-
-        elif rule_file.startswith("./tri"):
-            identifier = "ReferenceCellType::Triangle"
-
-            points = 0.5 * (1.0 + points)
-            weights = weights / 4.0
-
-        elif rule_file.startswith("./hex"):
-            identifier = "ReferenceCellType::Hexahedron"
-
-            points = 0.5 * (1.0 + points)
-            weights = weights / 8.0
-
-        elif rule_file.startswith("./pri"):
-            identifier = "ReferenceCellType::Prism"
-
-            points = 0.5 * (1.0 + points)
-            weights = weights / 8.0
-
-        elif rule_file.startswith("./tet"):
-            identifier = "ReferenceCellType::Tetrahedron"
-
-            points = 0.5 * (1.0 + points)
-            weights = weights / 8.0
-
-        elif rule_file.startswith("./pyr"):
-            identifier = "ReferenceCellType::Pyramid"
-
-            points = (1.0 + points) @ np.array(
-                [[0.5, 0, 0], [0, 0.5, 0], [-0.25, -0.25, 0.5]], dtype="float64"
-            )
-
-            weights = weights / 8.0
-
-        else:
-            raise ValueError("Unknown simplex type.")
-
-        points = points.flatten()
-        weights = weights.flatten()
-
-        f.write("m.get_mut(&" + identifier + ").unwrap().insert(\n")
-
-        f.write(str(npoints[index]) + ", \n")
-        f.write("(" + str(orders[index]) + ",vec![")
-        for point in points:
-            f.write(f"{point},")
-        f.write("],\n")
-        f.write("vec![\n")
-        for weight in weights:
-            f.write(f"{weight},")
-        f.write("]));\n")
-
-    # Now add the standard Gauss Legendre rules
+    f.write("pub(crate) static ref SIMPLEX_RULE_DEFINITIONS_INTERVAL: HM = {\n")
+    # Add the standard Gauss Legendre rules
+    f.write("let mut m = HM::new();\n")
 
     nmax = 100
-    identifier = "ReferenceCellType::Interval"
 
     for n in range(1, nmax + 1):
         p, w = np.polynomial.legendre.leggauss(n)
@@ -117,7 +42,7 @@ with open("simplex_rule_definitions.rs", "w") as f:
         points = 0.5 * (1.0 + p[sorted_indices])
         weights = 0.5 * w[sorted_indices]
 
-        f.write("m.get_mut(&" + identifier + ").unwrap().insert(\n")
+        f.write("m.insert(\n")
         f.write(str(len(w)) + ", \n")
         f.write("(" + str(2 * len(w) - 1) + ",vec![")
         for point in points:
@@ -127,8 +52,75 @@ with open("simplex_rule_definitions.rs", "w") as f:
         for weight in weights:
             f.write(f"{weight},")
         f.write("]));\n")
+    f.write("m\n")
+    f.write("};\n")
 
-    f.write("m };\n}")
+    for cell, file_id in [
+        ("triangle", "tri"),
+        ("quadrilateral", "quad"),
+        ("tetrahedron", "tet"),
+        ("hexahedron", "hex"),
+        ("prism", "pri"),
+        ("pyramid", "pyr"),
+    ]:
+        f.write(f"pub(crate) static ref SIMPLEX_RULE_DEFINITIONS_{cell.upper()}: HM = {{\n")
+        f.write("let mut m = HM::new();\n")
+
+        for index, rule_file in enumerate(all_rule_files):
+            if not rule_file.startswith(f"./{file_id}"):
+                continue
+            arr = np.atleast_2d(np.loadtxt(rule_file))
+            points = arr[:, :-1]
+            weights = arr[:, -1]
+
+            if rule_file.startswith("./quad"):
+                points = 0.5 * (1.0 + points)
+                weights = weights / 4.0
+
+            elif rule_file.startswith("./tri"):
+                points = 0.5 * (1.0 + points)
+                weights = weights / 4.0
+
+            elif rule_file.startswith("./hex"):
+                points = 0.5 * (1.0 + points)
+                weights = weights / 8.0
+
+            elif rule_file.startswith("./pri"):
+                points = 0.5 * (1.0 + points)
+                weights = weights / 8.0
+
+            elif rule_file.startswith("./tet"):
+                points = 0.5 * (1.0 + points)
+                weights = weights / 8.0
+
+            elif rule_file.startswith("./pyr"):
+                points = (1.0 + points) @ np.array(
+                    [[0.5, 0, 0], [0, 0.5, 0], [-0.25, -0.25, 0.5]], dtype="float64"
+                )
+                weights = weights / 8.0
+
+            else:
+                raise ValueError("Unknown simplex type.")
+
+            points = points.flatten()
+            weights = weights.flatten()
+
+            f.write("m.insert(\n")
+
+            f.write(str(npoints[index]) + ", \n")
+            f.write("(" + str(orders[index]) + ",vec![")
+            for point in points:
+                f.write(f"{point},")
+            f.write("],\n")
+            f.write("vec![\n")
+            for weight in weights:
+                f.write(f"{weight},")
+            f.write("]));\n")
+
+        f.write("m\n")
+        f.write("};\n")
+
+    f.write("}")
 
 os.system("rustfmt ./simplex_rule_definitions.rs")
 os.system("cp ./simplex_rule_definitions.rs ../src/")

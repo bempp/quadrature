@@ -1,13 +1,12 @@
 //! Duffy rules for triangles.
 use crate::{
     duffy::common::{create_triangle_mapper, next_triangle_vertex, transform_coords},
-    simplex_rules::simplex_rule,
+    simplex_rules::simplex_rule_interval,
     types::{
         CellToCellConnectivity, NumericalQuadratureDefinition, QuadratureError,
         TestTrialNumericalQuadratureDefinition,
     },
 };
-use ndelement::types::ReferenceCellType;
 
 fn identical_triangles(
     interval_rule: &NumericalQuadratureDefinition,
@@ -310,7 +309,7 @@ pub fn triangle_duffy(
     connectivity: &CellToCellConnectivity,
     npoints: usize,
 ) -> Result<TestTrialNumericalQuadratureDefinition, QuadratureError> {
-    let rule = simplex_rule(ReferenceCellType::Interval, npoints)?;
+    let rule = simplex_rule_interval(npoints)?;
 
     match connectivity.connectivity_dimension {
         // Identical triangles
@@ -616,8 +615,6 @@ mod test {
             };
 
             let singular_rule = triangle_duffy(&connectivity, npoints).unwrap();
-
-            // let rule = simplex_rule(ReferenceCellType::Interval, npoints).unwrap();
 
             // let singular_rule = vertex_adjacent_triangles(&rule, 1, 2);
 
