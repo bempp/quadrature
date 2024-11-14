@@ -3,6 +3,7 @@
 #![warn(missing_docs)]
 
 pub mod duffy;
+pub mod gauss_jacobi;
 pub mod simplex_rule_definitions;
 pub mod simplex_rules;
 pub mod types;
