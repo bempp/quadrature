@@ -3,7 +3,7 @@ strict = []
 
 [package]
 name = "bempp-quadrature"
-version = "0.1.0"
+version = "0.1.0-dev"
 edition = "2021"
 authors = [
     "Timo Betcke <timo.betcke@gmail.com>",

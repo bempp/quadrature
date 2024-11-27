@@ -34,7 +34,6 @@ To make a new release of ndelement, follow the following steps:
    crates.io. Note: this cannot be undone, but you can use `cargo yank` to mark a version as
    unsuitable for use.
 
-7) Open a pull request to `main` to update the version numbers in `Cargo.toml` and `pyproject.toml`
-   to `[x].[y].[z]-dev`
+7) Open a pull request to `main` to update the version number in `Cargo.toml` to `[x].[y].[z]-dev`
 
 8) Add the release to the next issue of [Scientific Computing in Rust Monthly](https://github.com/rust-scicomp/scientific-computing-in-rust-monthly)
