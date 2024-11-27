@@ -22,7 +22,7 @@ To make a new release of ndelement, follow the following steps:
 3) Commit your changes and push to GitHub, open a pull request to merge changes back into main, and merge the
    pull request.
 
-4) [Create a release on GitHub](https://github.com/bempp/ndelement/releases/new) from the `main` branch.
+4) [Create a release on GitHub](https://github.com/bempp/quadrature/releases/new) from the `main` branch.
    The release tag and title should be `v[x].[y].[z]` (where `[x]`, `[y]` and `[z]` are as in step 2).
    In the "Describe this release" box, you should bullet point the main changes since the last
    release.
