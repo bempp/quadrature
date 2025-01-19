@@ -59,7 +59,7 @@ fn tri_quad_edge_points(
 
                     quadrilateral_output_points.push(xi * (1.0 - eta3) + eta3);
                     quadrilateral_output_points.push(xi * eta2);
-                    triangle_output_points.push(xi * (1.0 - eta1 - eta3 + eta3));
+                    triangle_output_points.push(xi * (1.0 - eta1 - eta3) + eta3);
                     triangle_output_points.push(xi * (1.0 - eta1));
                     output_weights.push(weight0);
 
