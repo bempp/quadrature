@@ -23,7 +23,7 @@ name = "bempp_quadrature"
 crate-type = ["lib", "cdylib"]
 
 [dependencies]
-itertools = "0.13.*"
+itertools = "0.14.*"
 lazy_static = "1.4"
 paste = "1.*"
 
