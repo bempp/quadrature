@@ -349,7 +349,6 @@ pub fn triangle_duffy(
 }
 
 #[cfg(test)]
-
 mod test {
     use approx::{assert_relative_eq, assert_ulps_eq};
 
