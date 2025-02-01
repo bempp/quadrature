@@ -97,7 +97,7 @@ fn tri_quad_edge_points(
 
                     // Sixth part
 
-                    quadrilateral_output_points.push(xi * eta1 * (1.0 - eta2 - eta3) + eta1);
+                    quadrilateral_output_points.push(xi * eta1 * (1.0 - eta2 - eta3) + eta3);
                     quadrilateral_output_points.push(xi);
                     triangle_output_points.push(xi * eta1 * (1.0 - eta3) + eta3);
                     triangle_output_points.push(xi * eta1);
